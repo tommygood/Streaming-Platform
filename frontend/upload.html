@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影片上傳</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+    <a href="#" class="w3-bar-item w3-button"><b>Video</b>Stream</a>
+    <div class="w3-right w3-hide-small">
+      <a href="#upload" class="w3-bar-item w3-button">上傳影片</a>
+      <a href="#play" class="w3-bar-item w3-button">觀看影片</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
+  <img class="w3-image" src="https://www.w3schools.com/w3images/lights.jpg" alt="Lights" width="1500" height="800">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>Upload</b></span> <span class="w3-hide-small w3-text-light-grey">Your Videos</span></h1>
+  </div>
+</header>
+
+<!-- Upload Section -->
+<div class="w3-content w3-padding" style="max-width:1564px" id="upload">
+  <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">上傳影片</h3>
+  <form id="uploadForm" class="w3-container w3-card w3-padding-32 w3-white" enctype="multipart/form-data">
+    <label for="videoUpload" class="w3-text-black"><b>選擇影片文件</b></label>
+    <input type="file" id="videoUpload" name="video" class="w3-input w3-border" accept="video/*" required>
+    <button class="w3-button w3-black w3-margin-top" type="submit">上傳</button>
+  </form>
+</div>
+
+<script>
+  const uploadForm = document.getElementById('uploadForm');
+
+  uploadForm.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = new FormData(uploadForm);
+
+    fetch('/upload', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      alert('影片上傳成功！');
+    })
+    .catch(error => {
+      console.error('上傳失敗:', error);
+    });
+  });
+</script>
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16">
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+</footer>
+
+</body>
+</html>
