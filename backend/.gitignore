@@ -1,0 +1,5 @@
+# Dependency directories
+node_modules/
+
+# a directory for storing object temporarily
+temp/
