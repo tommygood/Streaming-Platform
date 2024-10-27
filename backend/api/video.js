@@ -7,7 +7,7 @@ const fs = require("fs").promises;
 router.use(
   fileUpload({
     useTempFiles: true,
-    tempFileDir: "/tmp/",
+    tempFileDir: __dirname + "/tmp/",
   })
 );
 router.post("/upload", async (req, res) => {

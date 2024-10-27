@@ -29,15 +29,16 @@ class s3cmd {
     ]);
     return result;
   }
-  //for linux
-  // getS3Process(params) {
-  // 	const script = "s3cmd";
-  // 	const spawn = require("child_process").spawn;
-  // 	console.log(script, params);
-  // 	return spawn(script, params);
-  // }
+
+  getS3Process(params) {
+   	const script = "s3cmd";
+   	const spawn = require("child_process").spawn;
+   	console.log(script, params);
+   	return spawn(script, params);
+  }
 
   //for windows
+  /*
   getS3Process(params) {
     const script =
       "C:/Users/user/AppData/Local/Programs/Python/Python313/Scripts/s3cmd.bat"; // s3cmd
@@ -46,6 +47,7 @@ class s3cmd {
 
     return exec(command);
   }
+  */
 
   async createProcess(params) {
     const process = this.getS3Process(params);
