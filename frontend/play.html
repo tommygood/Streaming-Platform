@@ -57,8 +57,8 @@
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
     <a href="#" class="w3-bar-item w3-button"><b>Video</b>Stream</a>
     <div class="w3-right w3-hide-small">
-      <a href="#upload" class="w3-bar-item w3-button">上傳影片</a>
-      <a href="#play" class="w3-bar-item w3-button">觀看影片</a>
+      <a href='./upload.html' class="w3-bar-item w3-button">上傳影片</a>
+      <a href="./play.html" class="w3-bar-item w3-button">觀看影片</a>
     </div>
   </div>
 </div>
@@ -74,12 +74,12 @@
     <div class="left-panel">
       <div class="main-video-container">
         <video id="mainVideo" class="main-video" controls>
-          <source src="/path/to/your/video1.mp4" type="video/mp4">
+          <source src="" type="video/mp4">
           您的瀏覽器不支持播放影片。
         </video>
         <div class="video-details">
-          <h3 id="videoTitle">影片標題 1</h3>
-          <p id="videoDate">抓取日期：2024-10-23</p>
+          <h3 id="videoTitle">影片標題</h3>
+          <p id="videoDate">抓取日期：</p>
         </div>
       </div>
     </div>
@@ -93,47 +93,62 @@
 
 <!-- JavaScript 用於動態生成影片列表和播放影片 -->
 <script>
-  // 設定變數
-  const videos = [
-    { src: "/path/to/your/video1.mp4", title: "影片標題 1", date: "2024-10-23" },
-    { src: "/path/to/your/video2.mp4", title: "影片標題 2", date: "2024-10-22" },
-    { src: "/path/to/your/video3.mp4", title: "影片標題 3", date: "2024-10-21" },
-    { src: "/path/to/your/video4.mp4", title: "影片標題 4", date: "2024-10-20" },
-    { src: "/path/to/your/video5.mp4", title: "影片標題 5", date: "2024-10-19" },
-    { src: "/path/to/your/video6.mp4", title: "影片標題 6", date: "2024-10-18" }
-  ];
+fetch('/api/video/list')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    if (data.length > 0) playMainVideo(data[0]); // 播放第一個影片
+    createVideoList(data); // 動態生成影片列表
+  })
+  .catch(error => console.error('無法取得影片列表:', error));
 
-  // 動態生成右邊影片列表
-  const videoList = document.getElementById('videoList');
-  videos.forEach((video, index) => {
-    const rightVideo = document.createElement('div');
-    rightVideo.className = 'right-video';
-    rightVideo.innerHTML = `
-      <video src="${video.src}" muted></video>
-      <div class="right-video-title">${video.title}</div>
-    `;
-    rightVideo.onclick = () => playMainVideo(index);
-    videoList.appendChild(rightVideo);
+// 動態生成影片列表
+function createVideoList(videos) {
+  const videoListContainer = document.getElementById('videoList');
+  videoListContainer.innerHTML = ''; // 清空列表
+
+  videos.forEach(video => {
+    const videoItem = document.createElement('div');
+    videoItem.className = 'right-video';
+    videoItem.onclick = () => playMainVideo(video); // 點擊播放影片
+
+    const videoThumbnail = document.createElement('video');
+    videoThumbnail.src = video.url;
+    videoThumbnail.controls = true;
+    videoThumbnail.muted = true; // 靜音顯示縮略圖
+    videoThumbnail.width = 100;
+    videoThumbnail.height = 70;
+
+    const videoTitle = document.createElement('div');
+    videoTitle.className = 'right-video-title';
+    videoTitle.textContent = video.title;
+
+    videoItem.appendChild(videoThumbnail);
+    videoItem.appendChild(videoTitle);
+    videoListContainer.appendChild(videoItem);
   });
+}
 
-  // 播放主影片的函數
-  function playMainVideo(index) {
-    const mainVideo = document.getElementById('mainVideo');
-    const videoTitle = document.getElementById('videoTitle');
-    const videoDate = document.getElementById('videoDate');
+function playMainVideo(video) {
+  const mainVideo = document.getElementById('mainVideo');
+  const sourceElement = mainVideo.querySelector('source');
+  const videoTitle = document.getElementById('videoTitle');
+  const videoDate = document.getElementById('videoDate');
 
-    mainVideo.src = videos[index].src;
-    videoTitle.textContent = videos[index].title;
-    videoDate.textContent = "抓取日期：" + videos[index].date;
+  // 更新主影片播放器的來源
+  sourceElement.src = video.url;
+  mainVideo.load();
 
-    mainVideo.play();
-  }
+  // 更新影片的標題和日期
+  videoTitle.textContent = video.title;
+  videoDate.textContent = "抓取日期：" + video.date;
+
+  // 播放選中的影片
+  mainVideo.play().catch(error => {
+    console.warn("自動播放被阻止，等待用戶手動播放", error);
+  });
+}
 </script>
-
-<!-- Footer -->
-<footer class="w3-center w3-black w3-padding-16">
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
-</footer>
 
 </body>
 </html>
