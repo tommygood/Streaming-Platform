@@ -45,10 +45,9 @@
   const fileInput = document.querySelector('input[type="file"]');
   const file = fileInput.files[0];
    // 使用 URL 編碼文件名
-   const encodedFileName = encodeURIComponent(file.name);
 
 // 將文件和編碼後的文件名加入 FormData
-formData.append('video', file, encodedFileName);
+formData.append('video', file);
 
   fetch('/api/video/upload', {
     method: 'POST',

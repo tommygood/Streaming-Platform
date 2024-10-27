@@ -2,7 +2,6 @@ const fileUpload = require("express-fileupload");
 const router = require("express").Router();
 const file = require("../utilities/file.js"); // 導入 File 類
 const path = require("path");
-const { v4: uuidv4 } = require("uuid");
 const fs = require("fs").promises;
 
 router.use(
@@ -22,11 +21,7 @@ router.post("/upload", async (req, res) => {
 
   // 使用 UUID 生成唯一文件名，保留文件擴展名(不知道為什麼不能附上去)
   const uploadDir = path.join(__dirname, "tmp");
-  const originalFileName = decodeURIComponent(sampleFile.name);
-  console.log(originalFileName);
-  const uniqueFileName = `${uuidv4()}${path.extname(originalFileName)}`;
-  const uploadPath = path.join(uploadDir, uniqueFileName);
-  console.log(uploadPath);
+  const uploadPath = path.join(uploadDir, sampleFile.name);
 
   sampleFile.mv(uploadPath, (err) => {
     if (err) {
