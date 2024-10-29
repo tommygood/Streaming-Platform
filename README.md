@@ -6,7 +6,7 @@
 - <a href='https://hackmd.io/8TjXmO6ZQiWGy4wULmGyog'>詳細介紹</a>
 
 ## 架構
-
+- 採用 indirect upload
 - <a href='https://hackmd.io/8r00f8XbQKu0VzChQ0sWsQ?view'>詳細介紹</a>
 
 ## Prerequisite
@@ -20,6 +20,4 @@
 - `cd backend && node index.js`
 
 **windows**
-![alt text](image.png)
-
-- 要將 s3cmd.js 的 script 改成自己的 s3cmd 的位置
+- 要將 s3cmd.js 的 s3cmd 執行檔改成自己的 s3cmd 的位置
