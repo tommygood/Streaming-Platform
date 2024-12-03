@@ -47,7 +47,6 @@ router.get("/list", async (req, res) => {
     const result = await file.list();
     const videoList = result.split("\n").map((line) => {
       const parts = line.trim().split(/\s+/);
-      if (parts.length < 4) return null;
 
       const s3Url = parts[3];
       const httpUrl = convertS3UrlToHttp(s3Url);
@@ -76,7 +75,7 @@ function convertS3UrlToHttp(s3Url) {
 
 async function deleteFileWithDelay(filePath) {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 10000)); // 延遲500毫秒
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     await fs.unlink(filePath);
     console.log("file deleted successfully");
   } catch (err) {
