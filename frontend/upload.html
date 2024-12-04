@@ -61,8 +61,18 @@ formData.append('video', file);
   .catch(error => {
     console.error('上傳失敗:', error);
   });
+  
 });
-
+fetch('/api/user/self',{
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer'+ localStorage.getItem('token')
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+  });
 </script>
 
 

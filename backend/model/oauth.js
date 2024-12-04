@@ -77,7 +77,6 @@ module.exports = {
           secure: true,
           maxAge: 1000 * 60 * 60 * 24,
         });
-
         res.redirect(`http://localhost:3000/play.html`);
         return {
           suc: true,
