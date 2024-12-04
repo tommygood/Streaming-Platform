@@ -8,7 +8,8 @@ app.use(express.json());
 app.use("/api/video", require("./api/video.js"));
 app.use("/api/login", require("./api/login.js"));
 app.use("/api/user", require("./api/user.js"));
-
+app.use("/api/post", require("./api/post.js"));
+app.use("/api/comment", require("./api/comment.js"));
 const port = 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

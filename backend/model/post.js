@@ -1,8 +1,8 @@
-const conn = require("./conn");
+const db = require("./conn");
 
 module.exports = {
   getAllPosts: async function () {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   addPost: async function (postData) {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
@@ -39,7 +39,7 @@ module.exports = {
   },
 
   updatePost: async function (pid, postData) {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
@@ -63,7 +63,7 @@ module.exports = {
   },
 
   deletePost: async function (pid) {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {

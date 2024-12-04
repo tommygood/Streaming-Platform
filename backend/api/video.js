@@ -92,8 +92,8 @@ router.get("/list", async (req, res) => {
 router.get("/:vid", async (req, res) => {
   try {
     const vid = req.params.vid;
-    const video = await video.getVideo(vid);
-    res.status(200).json(video);
+    const videoData = await video.getVideo(vid);
+    res.status(200).json(videoData);
   } catch (error) {
     res
       .status(500)
@@ -157,7 +157,7 @@ router.get("/list/:uid", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const videoData = req.body;
-    const newVideo = await video.addVideo(videoData); // 假設有一個 addVideo 方法
+    const newVideo = await video.addVideo(videoData);
     res.status(201).json(newVideo);
   } catch (error) {
     res
@@ -171,7 +171,8 @@ router.put("/:vid", async (req, res) => {
   try {
     const vid = req.params.vid;
     const videoData = req.body;
-    const updatedVideo = await video.updateVideo(vid, videoData); // 假設有一個 updateVideo 方法
+    console.log("videoData", videoData);
+    const updatedVideo = await video.updateVideo(vid, videoData);
     res.status(200).json(updatedVideo);
   } catch (error) {
     res

@@ -58,33 +58,11 @@ module.exports = {
         const sql = "SELECT * FROM `User` WHERE `uid` = ?;";
         const result = await conn.query(sql, [identifier]);
         db_conn.closeDBConnection(conn);
+        console.log("Raw birthday data from database:", result[0].birthday);
+
         return result[0];
       } catch (e) {
         console.error("error getting user self info : ", e);
-        conn.release();
-        return null;
-      }
-    }
-  },
-
-  // check if user status is valid
-  isValid: async function (identifer) {
-    const conn = await db_conn.getDBConnection();
-    if (conn == null) {
-      return null;
-    } else {
-      try {
-        const sql =
-          "SELECT COUNT(*) FROM User WHERE identifier = ? AND status = 1;";
-        const result = await conn.query(sql, [identifer]);
-        db_conn.closeDBConnection(conn);
-        if (result[0]["COUNT(*)"] >= 1) {
-          return true;
-        } else {
-          return false;
-        }
-      } catch (e) {
-        console.error("error getting user : ", e);
         conn.release();
         return null;
       }

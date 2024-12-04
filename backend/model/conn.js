@@ -7,20 +7,9 @@ const pool = mariadb.createPool({
   user: "root",
   password: "20020124e",
   database: "s3",
-  acquireTimeout: 30000, // 增加超時時間
+  waitForConnections: true,
+  dateStrings: true, // 禁用日期自動轉換
 });
-
-// async function testConnection() {
-//   try {
-//     const conn = await pool.getConnection();
-//     console.log("Connected to the database!");
-//     conn.release(); // 釋放連接
-//   } catch (err) {
-//     console.error("Error connecting to the database:", err);
-//   } finally {
-//     pool.end();
-//   }
-// }
 
 module.exports = {
   // return connection of db

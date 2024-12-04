@@ -12,12 +12,13 @@ CREATE TABLE `User` (
 CREATE TABLE `Video`(
     `vid` int NOT NULL AUTO_INCREMENT,
     `uid` varchar(12) NOT NULL,
-    `views` int NOT NULL,
+    `views` int NOT NULL DEFAULT 0,
     `viewNumber` int DEFAULT 0,
-    `videoTitle` varchar(20) DEFAULT NULL,
+    `videoTitle` TEXT DEFAULT NULL,
     `likeNumber` int DEFAULT 0,
-    `videoDesciption` varchar(255) DEFAULT NULL,
+    `videoDescription` TEXT DEFAULT NULL,
     `videoDate` datetime DEFAULT CURRENT_TIMESTAMP,
+    `type` varchar(10) DEFAULT NULL,
     PRIMARY KEY (`vid`),
     FOREIGN KEY (`uid`) REFERENCES `User` (`uid`)
 );
@@ -27,7 +28,7 @@ CREATE TABLE `Comment`(
     `vid` int default NULL,
     `uid` varchar(12) NOT NULL,
     `postid` int default NULL,
-    `content` varchar(255) DEFAULT NULL,
+    `content` TEXT DEFAULT NULL,
     `commentDate` datetime DEFAULT CURRENT_TIMESTAMP,
     `commentLike` int DEFAULT 0,
     PRIMARY KEY (`cid`),
@@ -39,9 +40,9 @@ CREATE TABLE `Comment`(
 CREATE TABLE `Post`(
     `postid` int NOT NULL AUTO_INCREMENT,
     `uid` varchar(12) NOT NULL,
-    `postText` varchar(255) DEFAULT NULL,
+    `postText` TEXT DEFAULT NULL,
     `postLike` int DEFAULT 0 ,
-    `postComment` varchar(255) DEFAULT NULL,
+    `postComment` TEXT DEFAULT NULL,
     `uploadTime` datetime DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`postid`),
     FOREIGN KEY (`uid`) REFERENCES `User` (`uid`)
