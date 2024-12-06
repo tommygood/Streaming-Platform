@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const post = require("../model/post.js"); // 假設有一個 post 模組來處理 SQL 操作
-
+const jwt = require("../utilities/jwt.js");
 // GET /api/posts
 router.get("/", async (req, res) => {
   try {
@@ -15,10 +15,11 @@ router.get("/", async (req, res) => {
 });
 
 // POST /api/posts
-router.post("/", async (req, res) => {
+router.post("/", jwt.verifyLogin, async (req, res) => {
   try {
+    const identifier = req.identifier;
     const postData = req.body;
-    const newPost = await post.addPost(postData);
+    const newPost = await post.addPost(identifier, postData);
     res.status(201).json(newPost);
   } catch (error) {
     res
@@ -27,9 +28,13 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:postid", async (req, res) => {
+router.put("/:postid", jwt.verifyLogin, async (req, res) => {
   try {
     const postid = req.params.postid;
+    // if (postid !== req.identifier) {
+    //   res.status(403).json({ message: "Forbidden" });
+    //   return;
+    // }
     const postData = req.body;
     const updatedPost = await post.updatePost(postid, postData);
     res.status(200).json(updatedPost);
@@ -40,7 +45,7 @@ router.put("/:postid", async (req, res) => {
   }
 });
 
-router.delete("/:postid", async (req, res) => {
+router.delete("/:postid", jwt.verifyLogin, async (req, res) => {
   try {
     const postid = req.params.postid;
     await post.deletePost(postid);

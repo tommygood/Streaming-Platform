@@ -68,4 +68,28 @@ module.exports = {
       }
     }
   },
+  updateSelf: async function (identifier, userData) {
+    const conn = await db_conn.getDBConnection();
+    if (conn == null) {
+      return null;
+    } else {
+      try {
+        const sql =
+          "UPDATE `User` SET `name` = ?, `age` = ?, `gender` = ?, `birthday` = ? WHERE `uid` = ?";
+        const result = await conn.query(sql, [
+          userData.name,
+          userData.age,
+          userData.gender,
+          userData.birthday,
+          identifier,
+        ]);
+        db_conn.closeDBConnection(conn);
+        return { success: true };
+      } catch (e) {
+        console.error("error updating user self info : ", e);
+        conn.release();
+        return { success: false, error: e.message };
+      }
+    }
+  },
 };

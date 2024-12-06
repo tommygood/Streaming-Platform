@@ -47,41 +47,41 @@ router.get("/list", async (req, res) => {
   try {
     const sqlData = await video.get();
 
-    const s3Result = await file.list();
-    const s3VideoList = s3Result.split("\n").map((line) => {
-      const parts = line.trim().split(/\s+/);
-      const s3Url = parts[3];
-      const httpUrl = convertS3UrlToHttp(s3Url);
+    // const s3Result = await file.list();
+    // const s3VideoList = s3Result.split("\n").map((line) => {
+    //   const parts = line.trim().split(/\s+/);
+    //   const s3Url = parts[3];
+    //   const httpUrl = convertS3UrlToHttp(s3Url);
 
-      return {
-        date: `${parts[0]} ${parts[1]}`,
-        size: parts[2],
-        url: httpUrl,
-        title: httpUrl.split("/").pop(),
-      };
-    });
+    //   return {
+    //     date: `${parts[0]} ${parts[1]}`,
+    //     size: parts[2],
+    //     url: httpUrl,
+    //     title: httpUrl.split("/").pop(),
+    //   };
+    // });
 
-    // 合併 SQL 和 S3 的影片資料
-    const combinedData = sqlData.map((sqlVideo) => {
-      const s3Video = s3VideoList.find(
-        (s3Video) => s3Video.title === sqlVideo.videoTitle
-      );
-      return {
-        vid: sqlVideo.vid,
-        uid: sqlVideo.uid,
-        view: sqlVideo.view,
-        viewNumber: sqlVideo.viewNumber,
-        videoTitle: sqlVideo.videoTitle,
-        likeNumber: sqlVideo.likeNumber,
-        videoDescription: sqlVideo.videoDescription,
-        videoDate: sqlVideo.videoDate,
-        s3Url: s3Video ? s3Video.url : null,
-        s3Date: s3Video ? s3Video.date : null,
-        s3Size: s3Video ? s3Video.size : null,
-      };
-    });
+    // // 合併 SQL 和 S3 的影片資料
+    // const combinedData = sqlData.map((sqlVideo) => {
+    //   const s3Video = s3VideoList.find(
+    //     (s3Video) => s3Video.title === sqlVideo.videoTitle
+    //   );
+    //   return {
+    //     vid: sqlVideo.vid,
+    //     uid: sqlVideo.uid,
+    //     view: sqlVideo.view,
+    //     viewNumber: sqlVideo.viewNumber,
+    //     videoTitle: sqlVideo.videoTitle,
+    //     likeNumber: sqlVideo.likeNumber,
+    //     videoDescription: sqlVideo.videoDescription,
+    //     videoDate: sqlVideo.videoDate,
+    //     s3Url: s3Video ? s3Video.url : null,
+    //     s3Date: s3Video ? s3Video.date : null,
+    //     s3Size: s3Video ? s3Video.size : null,
+    //   };
+    // });
 
-    res.status(200).json(combinedData);
+    res.status(200).json(sqlData);
   } catch (error) {
     res
       .status(500)
@@ -109,42 +109,42 @@ router.get("/list/:uid", async (req, res) => {
     // 從 SQL 獲取特定用戶的所有影片資料
     const userVideos = await video.getUserVideos(uid);
 
-    // 從 S3 獲取影片列表
-    const s3Result = await file.list();
-    const s3VideoList = s3Result.split("\n").map((line) => {
-      const parts = line.trim().split(/\s+/);
-      const s3Url = parts[3];
-      const httpUrl = convertS3UrlToHttp(s3Url);
+    // // 從 S3 獲取影片列表
+    // const s3Result = await file.list();
+    // const s3VideoList = s3Result.split("\n").map((line) => {
+    //   const parts = line.trim().split(/\s+/);
+    //   const s3Url = parts[3];
+    //   const httpUrl = convertS3UrlToHttp(s3Url);
 
-      return {
-        date: `${parts[0]} ${parts[1]}`,
-        size: parts[2],
-        url: httpUrl,
-        title: httpUrl.split("/").pop(),
-      };
-    });
+    //   return {
+    //     date: `${parts[0]} ${parts[1]}`,
+    //     size: parts[2],
+    //     url: httpUrl,
+    //     title: httpUrl.split("/").pop(),
+    //   };
+    // });
 
-    // 合併 SQL 和 S3 的影片資料
-    const combinedData = userVideos.map((sqlVideo) => {
-      const s3Video = s3VideoList.find(
-        (s3Video) => s3Video.title === sqlVideo.videoTitle
-      );
-      return {
-        vid: sqlVideo.vid,
-        uid: sqlVideo.uid,
-        view: sqlVideo.view,
-        viewNumber: sqlVideo.viewNumber,
-        videoTitle: sqlVideo.videoTitle,
-        likeNumber: sqlVideo.likeNumber,
-        videoDescription: sqlVideo.videoDescription,
-        videoDate: sqlVideo.videoDate,
-        s3Url: s3Video ? s3Video.url : null,
-        s3Date: s3Video ? s3Video.date : null,
-        s3Size: s3Video ? s3Video.size : null,
-      };
-    });
+    // // 合併 SQL 和 S3 的影片資料
+    // const combinedData = userVideos.map((sqlVideo) => {
+    //   const s3Video = s3VideoList.find(
+    //     (s3Video) => s3Video.title === sqlVideo.videoTitle
+    //   );
+    //   return {
+    //     vid: sqlVideo.vid,
+    //     uid: sqlVideo.uid,
+    //     view: sqlVideo.view,
+    //     viewNumber: sqlVideo.viewNumber,
+    //     videoTitle: sqlVideo.videoTitle,
+    //     likeNumber: sqlVideo.likeNumber,
+    //     videoDescription: sqlVideo.videoDescription,
+    //     videoDate: sqlVideo.videoDate,
+    //     s3Url: s3Video ? s3Video.url : null,
+    //     s3Date: s3Video ? s3Video.date : null,
+    //     s3Size: s3Video ? s3Video.size : null,
+    //   };
+    // });
 
-    res.status(200).json(combinedData);
+    res.status(200).json(userVideos);
   } catch (error) {
     res.status(500).json({
       message: "Error retrieving user's videos",

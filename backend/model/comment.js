@@ -1,14 +1,14 @@
-const conn = require("./conn");
+const db = require("./conn");
 
 module.exports = {
   getAllComments: async function () {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
-        const sql = "SELECT * FROM comments";
-        const result = await conn.query(sql);
+        const sql = "SELECT * FROM comment";
+        const result = await db.query(sql);
         conn.release();
         return result;
       } catch (e) {
@@ -20,13 +20,13 @@ module.exports = {
   },
 
   getVideoComments: async function (vid) {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
-        const sql = "SELECT * FROM comments WHERE vid = ?";
-        const result = await conn.query(sql, [vid]);
+        const sql = "SELECT * FROM comment WHERE vid = ?";
+        const result = await db.query(sql, [vid]);
         conn.release();
         return result;
       } catch (e) {
@@ -38,12 +38,12 @@ module.exports = {
   },
 
   getPostComments: async function (postid) {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
-        const sql = "SELECT * FROM comments WHERE postid = ?";
+        const sql = "SELECT * FROM comment WHERE postid = ?";
         const result = await conn.query(sql, [postid]);
         conn.release();
         return result;
@@ -55,19 +55,19 @@ module.exports = {
     }
   },
 
-  addComment: async function (commentData) {
-    const conn = await conn.getDBConnection();
+  addComment: async function (identifier, commentData) {
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
         const sql =
-          "INSERT INTO comments (postid, vid,uid, commentText) VALUES (?, ?, ?, ?)";
+          "INSERT INTO comment (postid, vid,uid, content) VALUES (?, ?, ?, ?)";
         const result = await conn.query(sql, [
           commentData.postid,
           commentData.vid,
-          commentData.uid,
-          commentData.commentText,
+          identifier,
+          commentData.content,
         ]);
         conn.release();
         return result.insertId;
@@ -80,13 +80,13 @@ module.exports = {
   },
 
   updateComment: async function (cid, commentData) {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
-        const sql = "UPDATE comments SET commentText = ? WHERE cid = ?";
-        const result = await conn.query(sql, [commentData.commentText, cid]);
+        const sql = "UPDATE comment SET content = ? WHERE cid = ?";
+        const result = await conn.query(sql, [commentData.content, cid]);
         conn.release();
         return result.affectedRows;
       } catch (e) {
@@ -98,12 +98,12 @@ module.exports = {
   },
 
   deleteComment: async function (cid) {
-    const conn = await conn.getDBConnection();
+    const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
-        const sql = "DELETE FROM comments WHERE cid = ?";
+        const sql = "DELETE FROM comment WHERE cid = ?";
         const result = await conn.query(sql, [cid]);
         conn.release();
         return result.affectedRows;

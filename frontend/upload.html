@@ -63,7 +63,21 @@ formData.append('video', file);
   });
   
 });
-
+  const cid = 1;
+  const videoData = {
+    content:"留言2",
+  }
+  fetch(`/api/comment/${cid}`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(videoData)
+  })
+  .then(response => response.json() )
+  .then(data => {
+    console.log(data);
+  })
 
 </script>
 

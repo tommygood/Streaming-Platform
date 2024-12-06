@@ -19,17 +19,16 @@ module.exports = {
     }
   },
 
-  addPost: async function (postData) {
+  addPost: async function (identifier, postData) {
     const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
-        const sql =
-          "INSERT INTO Post (uid, postText, postLike, postComment) VALUES (?, ?, 0, 0)";
-        const result = await conn.query(sql, [postData.uid, postData.postText]);
+        const sql = "INSERT INTO Post (uid, postText) VALUES (?, ?)";
+        const result = await conn.query(sql, [identifier, postData.postText]);
         conn.release();
-        return result.insertId;
+        return true;
       } catch (e) {
         console.error("Error adding post: ", e);
         conn.release();
@@ -38,22 +37,16 @@ module.exports = {
     }
   },
 
-  updatePost: async function (pid, postData) {
+  updatePost: async function (postid, postData) {
     const conn = await db.getDBConnection();
     if (conn == null) {
       return null;
     } else {
       try {
-        const sql =
-          "UPDATE Post SET postText = ?, postComment = ?, uploadTime = ? WHERE postid = ?";
-        const result = await conn.query(sql, [
-          postData.postText,
-          postData.postComment,
-          postData.uploadTime,
-          postid,
-        ]);
+        const sql = "UPDATE Post SET postText = ? WHERE postid = ?";
+        const result = await conn.query(sql, [postData.postText, postid]);
         conn.release();
-        return result.affectedRows;
+        return true;
       } catch (e) {
         console.error("Error updating post: ", e);
         conn.release();

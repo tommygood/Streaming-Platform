@@ -22,4 +22,36 @@ router.get("/self", jwt.verifyLogin, async (req, res) => {
   }
 });
 
+router.put("/update", jwt.verifyLogin, async (req, res) => {
+  try {
+    const identifier = req.identifier;
+    const userData = req.body;
+    userData.age = countAge(userData.birthday);
+    const data = await User.updateSelf(identifier, userData);
+    res.json({ data });
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+function countAge(birthday) {
+  const [birthYear, birthMonth, birthDay] = birthday.split("-").map(Number);
+
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = today.getMonth() + 1;
+  const currentDay = today.getDate();
+
+  let age = currentYear - birthYear;
+
+  if (
+    currentMonth < birthMonth ||
+    (currentMonth === birthMonth && currentDay < birthDay)
+  ) {
+    age--;
+  }
+
+  return age;
+}
 module.exports = router;
