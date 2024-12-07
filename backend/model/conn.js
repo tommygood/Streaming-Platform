@@ -2,11 +2,11 @@ const mariadb = require("mariadb");
 
 const pool = mariadb.createPool({
   connectionLimit: 5,
-  host: "localhost",
+  host: "db.cymlab.ncu.im",
   port: 3306,
-  user: "root",
-  password: "20020124e",
-  database: "s3",
+  user: "Streaming",
+  password: "awss3",
+  database: "Streaming",
   waitForConnections: true,
   dateStrings: true, // 禁用日期自動轉換
 });
